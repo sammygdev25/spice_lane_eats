@@ -20,7 +20,7 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   const deliveryFee =
-    contactInfo?.method === 'delivery' ? DELIVERY_FEE : 0;
+    contactInfo?.orderType === 'delivery' ? DELIVERY_FEE : 0;
   const orderTotal = total + deliveryFee;
 
   const handleFormSubmit = (data: CheckoutFormData) => {
@@ -37,7 +37,7 @@ export default function CheckoutPage() {
       setError('Please fill in your contact and delivery details first.');
       return;
     }
-    if (contactInfo.method === 'delivery' && !contactInfo.address) {
+    if (contactInfo.orderType === 'delivery' && !contactInfo.deliveryAddress) {
       setError('Please provide a delivery address.');
       return;
     }
@@ -46,12 +46,12 @@ export default function CheckoutPage() {
     setError(null);
     try {
       const payload = {
-        contactName: contactInfo.name,
+        contactName: contactInfo.customerName,
         contactPhone: contactInfo.phone,
-        fulfillment: contactInfo.method,
+        fulfillment: contactInfo.orderType,
         deliveryAddress:
-          contactInfo.method === 'delivery'
-            ? contactInfo.address
+          contactInfo.orderType === 'delivery'
+            ? contactInfo.deliveryAddress
             : '',
         notes: contactInfo.notes || '',
         items: items.map((item) => ({
