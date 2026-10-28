@@ -41,7 +41,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }: CartItemRowProps) {
           {item.name}
         </div>
         <div className="ds-small ds-muted">
-          ${item.price.toFixed(2)} each
+          ${Number(item.price || 0).toFixed(2)} each
         </div>
       </div>
 
@@ -70,7 +70,7 @@ function CartItemRow({ item, onUpdateQuantity, onRemove }: CartItemRowProps) {
       </div>
 
       <div style={{ minWidth: '4rem', textAlign: 'right', fontWeight: 700, color: 'var(--color-primary)' }}>
-        ${lineTotal.toFixed(2)}
+        ${Number(lineTotal || 0).toFixed(2)}
       </div>
 
       <button

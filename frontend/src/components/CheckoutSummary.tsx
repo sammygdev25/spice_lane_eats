@@ -1,6 +1,6 @@
 import { Card, CardBody, CardTitle, Media, Price, Button, Stack } from '../components/ui';
 import { Icon } from '../components/icons';
-import type { CartItem } from '../types';
+import type { CartItem } from '../contexts/CartContext.tsx';
 
 interface CheckoutSummaryProps {
   items: CartItem[];
@@ -25,21 +25,21 @@ export default function CheckoutSummary({
         <CardTitle>Your Order</CardTitle>
         <Stack gap="sm">
           {items.map((item) => (
-            <div key={item.menuItem.id} className="ds-cluster ds-between">
+            <div key={item.menuItemId} className="ds-cluster ds-between">
               <div className="ds-cluster">
                 <Media
-                  src={item.menuItem.imageUrl}
-                  alt={item.menuItem.name}
+                  src={item.imageUrl}
+                  alt={item.name}
                   ratio="square"
                 />
                 <div>
-                  <div>{item.menuItem.name}</div>
+                  <div>{item.name}</div>
                   <span className="ds-muted ds-small">
                     Qty {item.quantity}
                   </span>
                 </div>
               </div>
-              <Price value={Number(item.menuItem.price) * item.quantity} />
+              <Price value={Number(item.price) * item.quantity} />
             </div>
           ))}
         </Stack>

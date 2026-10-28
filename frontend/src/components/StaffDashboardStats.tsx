@@ -1,5 +1,4 @@
 import { Grid, Stat } from '../components/ui';
-import { Icon } from '../components/icons';
 
 interface StaffDashboardStatsProps {
   totalMenuItems: number;
@@ -22,22 +21,22 @@ export default function StaffDashboardStats({
         <Stat
           value={loading ? '--' : String(totalMenuItems)}
           label="Menu items"
-          icon={<Icon name="book" />}
+          icon="book"
         />
         <Stat
           value={loading ? '--' : String(totalCategories)}
           label="Categories"
-          icon={<Icon name="grid" />}
+          icon="grid"
         />
         <Stat
           value={loading ? '--' : String(availableItems)}
           label="Available now"
-          icon={<Icon name="check" />}
+          icon="check"
         />
         <Stat
           value={loading ? '--' : String(pendingOrders)}
           label="Pending orders"
-          icon={<Icon name="clock" />}
+          icon="clock"
         />
       </Grid>
     </div>

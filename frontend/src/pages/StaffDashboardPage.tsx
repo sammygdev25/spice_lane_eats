@@ -63,7 +63,7 @@ export default function StaffDashboardPage() {
     setEditingItem(item);
     setItemFormOpen(true);
   };
-  const closeItemForm = () => {
+  const closeItemForm = async () => {
     setItemFormOpen(false);
     setEditingItem(null);
   };
@@ -92,7 +92,7 @@ export default function StaffDashboardPage() {
       setItemStatus(null);
       setError('Could not save the menu item.');
       return;
-    }
+    } finally { setLoading(false); }
     setTimeout(() => setItemStatus(null), 2000);
   };
 
@@ -104,18 +104,18 @@ export default function StaffDashboardPage() {
     } catch (err) {
       console.error(err);
       setError('Could not delete the menu item.');
-    }
+    } finally { setLoading(false); }
   };
 
-  const openAddCategory = () => {
+  const openAddCategory = async () => {
     setEditingCategory(null);
     setCategoryFormOpen(true);
   };
-  const openEditCategory = (category: Category) => {
+  const openEditCategory = async (category: Category) => {
     setEditingCategory(category);
     setCategoryFormOpen(true);
   };
-  const closeCategoryForm = () => {
+  const closeCategoryForm = async () => {
     setCategoryFormOpen(false);
     setEditingCategory(null);
   };
@@ -137,7 +137,7 @@ export default function StaffDashboardPage() {
       setCategoryStatus(null);
       setError('Could not save the category.');
       return;
-    }
+    } finally { setLoading(false); }
     setTimeout(() => setCategoryStatus(null), 2000);
   };
 
@@ -149,7 +149,7 @@ export default function StaffDashboardPage() {
     } catch (err) {
       console.error(err);
       setError('Could not delete the category.');
-    }
+    } finally { setLoading(false); }
   };
 
   const pendingOrders = orders.filter((o) => o.status === 'pending').length;
@@ -163,7 +163,7 @@ export default function StaffDashboardPage() {
     <div className="ds-stack-lg">
       {error && <Alert tone="danger">{error}</Alert>}
 
-      <StaffDashboardHeader userName={user?.name} onAddMenuItem={openAddItem} />
+      <StaffDashboardHeader userName={user?.name ?? undefined} onAddMenuItem={openAddItem} />
 
       <StaffDashboardStats
         totalMenuItems={menuItems.length}

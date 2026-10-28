@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { CartCount } from './CartFeedback';
 
 const NAV_LINKS = [
   { path: '/', label: 'Home', auth: false },
   { path: '/menu-items', label: 'Menu Items', auth: false },
   { path: '/orders', label: 'Order History', auth: true },
   { path: '/staff', label: 'Staff Dashboard', auth: true },
+  { path: '/orders/confirmation', label: 'Orders Confirmation' },
 ];
 
 export default function Navbar() {
@@ -46,7 +48,7 @@ export default function Navbar() {
               background: location.pathname === link.path ? 'var(--color-primary-light)' : 'transparent',
               textDecoration: 'none', transition: 'all var(--transition-fast)',
             }}>
-              {link.label}
+              {link.label}<CartCount path={link.path} />
             </Link>
           ))}
         </div>
@@ -85,7 +87,7 @@ export default function Navbar() {
             padding: '10px 4px', fontSize: 'var(--text-base)', fontWeight: 500, textDecoration: 'none',
             color: location.pathname === link.path ? 'var(--color-primary)' : 'var(--color-text)',
           }}>
-            {link.label}
+            {link.label}<CartCount path={link.path} />
           </Link>
         ))}
         {isAuthenticated ? (

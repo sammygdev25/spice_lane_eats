@@ -50,7 +50,7 @@ export default function MenuItemListGrid({ items, loading, onAddToCart, onClearF
                 !item.isAvailable ? (
                   <Badge tone="danger">Sold out</Badge>
                 ) : item.category?.name ? (
-                  <Badge tone="soft">{item.category.name}</Badge>
+                  <Badge tone="soft">{item.category?.name}</Badge>
                 ) : undefined
               }
             />

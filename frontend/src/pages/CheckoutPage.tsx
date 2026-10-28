@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../api';
@@ -20,7 +20,7 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   const deliveryFee =
-    contactInfo?.fulfillment === 'delivery' ? DELIVERY_FEE : 0;
+    contactInfo?.method === 'delivery' ? DELIVERY_FEE : 0;
   const orderTotal = total + deliveryFee;
 
   const handleFormSubmit = (data: CheckoutFormData) => {
@@ -37,7 +37,7 @@ export default function CheckoutPage() {
       setError('Please fill in your contact and delivery details first.');
       return;
     }
-    if (contactInfo.fulfillment === 'delivery' && !contactInfo.deliveryAddress) {
+    if (contactInfo.method === 'delivery' && !contactInfo.address) {
       setError('Please provide a delivery address.');
       return;
     }
@@ -46,16 +46,16 @@ export default function CheckoutPage() {
     setError(null);
     try {
       const payload = {
-        contactName: contactInfo.contactName,
-        contactPhone: contactInfo.contactPhone,
-        fulfillment: contactInfo.fulfillment,
+        contactName: contactInfo.name,
+        contactPhone: contactInfo.phone,
+        fulfillment: contactInfo.method,
         deliveryAddress:
-          contactInfo.fulfillment === 'delivery'
-            ? contactInfo.deliveryAddress
+          contactInfo.method === 'delivery'
+            ? contactInfo.address
             : '',
         notes: contactInfo.notes || '',
         items: items.map((item) => ({
-          menuItemId: item.menuItem.id,
+          menuItemId: item.menuItemId,
           quantity: item.quantity,
         })),
       };
@@ -80,10 +80,7 @@ export default function CheckoutPage() {
           icon="cart"
           title="Your cart is empty"
           text="Browse the Spice Lane menu and add a few dishes before checking out."
-          action={{
-            label: 'Browse the menu',
-            to: '/menu-items',
-          }}
+          action={<Link to="/menu-items">Browse the menu</Link>}
         />
       </div>
     );

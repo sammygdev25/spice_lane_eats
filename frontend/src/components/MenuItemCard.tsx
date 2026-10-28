@@ -13,7 +13,7 @@ function MenuItemCard({ item, onAddToCart }: MenuItemCardProps) {
   return (
     <Card className="menu-item-card">
       <Media
-        src={item.imageUrl ? `/img/${item.imageUrl}` : undefined}
+        src={item.imageUrl ? item.imageUrl : undefined}
         alt={item.name}
         ratio="wide"
         badge={!available ? <Badge tone="danger">Sold out</Badge> : undefined}

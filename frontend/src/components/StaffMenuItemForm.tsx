@@ -141,7 +141,7 @@ function StaffMenuItemForm({ initialData, categories, onSubmit, onCancel }: Staf
           type="text"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
-          placeholder="/img/dishes/example.jpg"
+          placeholder="/img/brand/hero.jpg"
         />
         <span className="ds-help">Path to an image under /img/</span>
       </div>

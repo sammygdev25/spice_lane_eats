@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import prisma from '../database';
 import { authMiddleware, requireStaff, AuthRequest } from '../middleware/auth';
+import { checkoutColumns, readCheckout, withDeliveryFee } from '../lib/checkout';
 
 const router = Router();
 
@@ -121,6 +122,9 @@ router.get('/:id', authMiddleware, async (req: AuthRequest, res: Response) => {
 
 // POST /api/orders/ - place a new order (pickup or delivery)
 router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
+  const orderCheckout = readCheckout(req.body);
+  if (orderCheckout.ok === false) { res.status(400).json({ error: 'Invalid checkout details', code: 'validation_error', issues: orderCheckout.issues }); return; }
+  const orderDetails = orderCheckout.details;
   const parsed = createOrderSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ error: 'Invalid body', code: 'validation_error', issues: parsed.error.issues });
@@ -159,6 +163,7 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
 
     const order = await prisma.order.create({
       data: {
+        ...checkoutColumns(orderDetails),
         userId: req.userId!,
         customerName,
         phone,
@@ -166,7 +171,7 @@ router.post('/', authMiddleware, async (req: AuthRequest, res: Response) => {
         deliveryAddress: orderType === 'delivery' ? deliveryAddress ?? '' : '',
         deliveryFee,
         notes: notes ?? '',
-        totalAmount,
+        totalAmount: withDeliveryFee(totalAmount, orderDetails),
         status: 'pending',
         items: {
           create: items.map((item) => {

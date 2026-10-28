@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { getOrderList } from '../api';
-import type { Order } from '../types';
+import type { Order, User } from '../types';
 import OrderHistoryHeader from '../components/OrderHistoryHeader';
 import OrderHistoryContent from '../components/OrderHistoryContent';
 import OrderHistoryDetails from '../components/OrderHistoryDetails';
@@ -30,11 +30,24 @@ export default function OrderHistoryPage() {
     };
   }, []);
 
+  const detailsUser: User | null = user
+    ? {
+        id: user.id,
+        email: user.email,
+        password: '',
+        name: user.name ?? user.username,
+        phone: user.phone ?? '',
+        role: user.role,
+        createdAt: '',
+        updatedAt: '',
+      }
+    : null;
+
   return (
     <div className="ds-stack-lg">
       <OrderHistoryHeader userName={user?.name || user?.email} />
       <OrderHistoryContent orders={orders} loading={loading} />
-      <OrderHistoryDetails user={user} />
+      <OrderHistoryDetails user={detailsUser} />
     </div>
   );
 }
