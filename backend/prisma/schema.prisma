@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  firstName String?  @map("first_name")
+  lastName  String?  @map("last_name")
+  isActive  Boolean  @default(true) @map("is_active")
+  isStaff   Boolean  @default(false) @map("is_staff")
+  name  String?
+  phone  String?
+  role  String @default("customer")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  refreshTokens RefreshToken[]
+  orders  Order[]
+
+  @@map("users")
+}
+model RefreshToken {
+  id        Int       @id @default(autoincrement())
+  tokenHash String    @unique @map("token_hash")
+  userId    Int       @map("user_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@map("refresh_tokens")
+}
+model Category {
+  id        Int      @id @default(autoincrement())
+  name  String
+  displayOrder  Int  @map("display_order")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  menuItems  MenuItem[]
+
+  @@map("categories")
+}
+model MenuItem {
+  id        Int      @id @default(autoincrement())
+  name  String
+  description  String
+  price  Decimal @db.Decimal(10, 2)
+  categoryId  Int  @map("category_id")
+  category  Category  @relation(fields: [categoryId], references: [id])
+  imageUrl  String  @map("image_url")
+  isAvailable  Boolean  @map("is_available")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  orderItems  OrderItem[]
+
+  @@map("menuitems")
+}
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId  Int  @map("user_id")
+  user  User  @relation(fields: [userId], references: [id])
+  customerName  String  @map("customer_name")
+  phone  String
+  orderType  String  @map("order_type")
+  deliveryAddress String? @map("delivery_address")
+  deliveryFee  Decimal  @map("delivery_fee") @db.Decimal(10, 2)
+  notes String?
+  totalAmount  Decimal  @map("total_amount") @db.Decimal(10, 2)
+  status  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  orderItems  OrderItem[]
+  paidAt DateTime? @map("paid_at")
+  stripeSessionId String? @unique @map("stripe_session_id")
+  contactName String? @map("contact_name")
+  contactPhone String? @map("contact_phone")
+  fulfillment String @default("pickup")
+
+  @@map("orders")
+}
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId  Int  @map("order_id")
+  order  Order  @relation(fields: [orderId], references: [id])
+  menuItemId  Int  @map("menu_item_id")
+  menuItem  MenuItem  @relation(fields: [menuItemId], references: [id])
+  quantity  Int
+  price  Decimal @db.Decimal(10, 2)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("orderitems")
+}

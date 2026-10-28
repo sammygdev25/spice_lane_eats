@@ -2,5 +2,15 @@
   "project_name": "spice_lane_eats",
   "current_version": "1.0",
   "current_generation": 1,
-  "versions": []
+  "versions": [
+    {
+      "version": "1.0",
+      "phase": "init",
+      "commit_hash": "6b4ccf7",
+      "message": "Initial project creation - spice_lane_eats",
+      "timestamp": "2026-10-28T17:13:34.527853+00:00",
+      "files_changed": 2,
+      "generation_id": 1
+    }
+  ]
 }
