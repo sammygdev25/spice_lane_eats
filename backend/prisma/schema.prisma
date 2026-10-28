@@ -76,7 +76,7 @@ model Order {
   status  String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  orderItems  OrderItem[]
+  items  OrderItem[]
   paidAt DateTime? @map("paid_at")
   stripeSessionId String? @unique @map("stripe_session_id")
   contactName String? @map("contact_name")
