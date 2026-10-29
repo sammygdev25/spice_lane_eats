@@ -14,6 +14,7 @@ import StaffDashboardPage from './pages/StaffDashboardPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import MenuItemListPage from './pages/MenuItemListPage';
+import CartPage from './pages/CartPage';
 import OrderPayPage from './pages/OrderPayPage';
 import PaymentCancelPage from './pages/PaymentCancelPage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/menu-items" element={<MenuItemListPage />} />
+                <Route path="/cart" element={<CartPage />} />
                 <Route path="/order-pay" element={<RequireAuth><OrderPayPage /></RequireAuth>} />
                 <Route path="/payment-cancel" element={<PaymentCancelPage />} />
                 <Route path="/payment-success" element={<RequireAuth><PaymentSuccessPage /></RequireAuth>} />
