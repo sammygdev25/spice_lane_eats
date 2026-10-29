@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 // Scaffold-owned (cart_feedback, PX.21): the item count on the Cart link and a short notice on every cart change the
 // shopper makes, whatever the pages do. Both read the cart context and never change it.
-const CART_PATH: string = '';
+const CART_PATH: string = '/cart';
 const COUNT_KEYS = ['itemCount', 'totalItems', 'cartCount', 'count'];
 const COUNT_GETTERS = ['getItemCount', 'getTotalItems', 'getCartCount'];
 const LIST_KEYS = ['items', 'cartItems', 'cart', 'lines'];

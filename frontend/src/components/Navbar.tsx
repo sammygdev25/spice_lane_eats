@@ -6,9 +6,9 @@ import { CartCount } from './CartFeedback';
 const NAV_LINKS = [
   { path: '/', label: 'Home', auth: false },
   { path: '/menu-items', label: 'Menu Items', auth: false },
+  { path: '/cart', label: 'Cart', auth: false },
   { path: '/orders', label: 'Order History', auth: true },
-  { path: '/staff', label: 'Staff Dashboard', auth: true },
-  { path: '/orders/confirmation', label: 'Orders Confirmation' },
+  { path: '/staff', label: 'Staff Dashboard', auth: true, staff: true },
 ];
 
 export default function Navbar() {
@@ -40,7 +40,11 @@ export default function Navbar() {
           Spice Lane Eats
         </Link>
         <div className="ds-nav-links">
-          {NAV_LINKS.filter(link => !link.auth || isAuthenticated).map(link => (
+          {NAV_LINKS.filter(link => {
+            if (link.auth && !isAuthenticated) return false;
+            if ((link as any).staff && !(user as any)?.isStaff) return false;
+            return true;
+          }).map(link => (
             <Link key={link.path} to={link.path} style={{
               padding: '6px 12px', borderRadius: 'var(--radius-md)',
               fontSize: 'var(--text-sm)', fontWeight: 500, whiteSpace: 'nowrap',
@@ -82,7 +86,11 @@ export default function Navbar() {
         </button>
       </div>
       <div className={'ds-nav-mobile' + (mobileOpen ? ' open' : '')} style={{ padding: '0 var(--space-lg)' }}>
-        {NAV_LINKS.filter(link => !link.auth || isAuthenticated).map(link => (
+        {NAV_LINKS.filter(link => {
+          if (link.auth && !isAuthenticated) return false;
+          if ((link as any).staff && !(user as any)?.isStaff) return false;
+          return true;
+        }).map(link => (
           <Link key={link.path} to={link.path} onClick={() => setMobileOpen(false)} style={{
             padding: '10px 4px', fontSize: 'var(--text-base)', fontWeight: 500, textDecoration: 'none',
             color: location.pathname === link.path ? 'var(--color-primary)' : 'var(--color-text)',
